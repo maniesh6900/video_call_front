@@ -2,52 +2,21 @@ import { useEffect, useState } from "react";
 
 import VideoRoom from "./VideoRoom";
 import { Link } from "react-router-dom";
+// const websocketUrl = import.meta.env.WEBSOCKET_URL;
 
 
-/**
-* The main component of the application that sets up a WebSocket connection and handles room creation.
-* @example
-* App()
-* // Renders the main application interface.
-* @returns {JSX.Element} The main UI component of the application.
-* @description
-*   - Utilizes useEffect to establish a WebSocket connection and clean up upon component unmount.
-*   - Manages state for WebSocket, start status, and token using useState.
-*   - Renders UI elements conditionally based on state, including a button to create a room and an input for room ID.
-*/
 function Index() {
 
   const [start, setStart] = useState(false);
-  // const [option, setOption] = useState<"Create" | "join" >();
+  
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  // const [token, setToken] = useState("");
 
 
-/**
-  * Initializes a WebSocket connection and cleans up on unmount.
-  * @example
-  * () => {
-  *   (async function () {
-  *     const ws = new WebSocket("ws://localhost:3001");
-  *     setSocket(ws);
-  *   })();
-  *   return (() => {
-  *     if (socket) {
-  *       socket.close();
-  *       setSocket(null);
-  *     }
-  *   });
-  * }
-  * @returns {Function} A cleanup function that closes the WebSocket connection.
-  * @description
-  *   - Establishes a WebSocket connection to "ws://localhost:3001".
-  *   - Sets the WebSocket instance to the state variable `socket`.
-  *   - The cleanup function ensures the WebSocket is closed and state is reset to null on component unmount or re-render.
-  */
+
  
   useEffect(() => {
     (async function () {
-      const ws = new WebSocket("ws://localhost:3001");
+      const ws = new WebSocket("wss://video-calling-backend-1f0q.onrender.com");
      
       
       setSocket(ws);

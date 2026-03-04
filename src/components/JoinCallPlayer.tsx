@@ -12,6 +12,7 @@ import {
   toggleScreenShare,
   leaveCall,
 } from "../store/callSlice";
+// const backend = import.meta.env.BACKEND_URL;
 
 const appId = import.meta.env.VITE_APP_ID;
 const channel = import.meta.env.VITE_CHANNEL_NAME;
@@ -60,7 +61,7 @@ function JoinCallPlayer({ _chennal, socket }: { socket: WebSocket; _chennal: str
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const res = await axios.post("http://localhost:3000/api/v1/user/token", { channel, _uid });
+        const res = await axios.post(`https://video-calling-backend-1f0q.onrender.com/api/v1/user/token`, { channel, _uid });
         dispatch(setToken(res.data.data.token));
       } catch (error) {
         console.error("Error fetching token:", error);

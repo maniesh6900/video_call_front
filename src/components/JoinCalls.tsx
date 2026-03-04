@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
 import JoinCallPlayer from './JoinCallPlayer';
-
+// const websocketUrl = import.meta.env.WEBSOCKET_URL;
 function JoinCalls() {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [start, setStart] = useState<boolean>(false);
     const [chennal, setChennal] = useState<string | null>(null);
 
     useEffect(() => {
-        (async function () {
-          const ws = new WebSocket("ws://localhost:3001");
-         
-          
+        (function () {
+          const ws = new WebSocket("wss://video-calling-backend-1f0q.onrender.com");
           setSocket(ws);
         })();
     

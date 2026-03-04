@@ -4,14 +4,15 @@ import VideoPlayer from "./VideoPlayer";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
-  setToken,
+  leaveCall,
   setCurrentUser,
   setJoined,
-  toggleMute,
+  setToken,
   toggleCamera,
+  toggleMute,
   toggleScreenShare,
-  leaveCall,
 } from "../store/callSlice";
+// const backend = import.meta.env.BACKEND_URL;
 
 const _uid = Math.floor(100000 + Math.random() * 900000);
 const appId = import.meta.env.VITE_APP_ID;
@@ -35,7 +36,7 @@ export default function VideoRoom({ socket }: { socket: WebSocket }) {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const res = await axios.post("http://localhost:3000/api/v1/user/token", {
+        const res = await axios.post(`https://video-calling-backend-1f0q.onrender.com/api/v1/user/token`, {
           channel,
           _uid,
         });
