@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-function VideoPlayer({ user, token }: any) {
+function VideoPlayer({ user }: any) {
     const ref = React.useRef(null);
     useEffect(() => {
         user?.videoTrack.play(ref.current);
@@ -8,13 +8,11 @@ function VideoPlayer({ user, token }: any) {
 
 
     return (
-        <div>
-            <div className='w-64 h-64 border-2 border-gray-500 rounded-md'>
-                <div ref={ref} className="w-full h-full"></div>
-                <p className='text-center text-sm mt-2'>User ID: {user?.uid}</p>
-                <label className='m-2'>Token:</label>
-                    <input type="text" value={token} />
+        <div className="w-[320px] max-w-full rounded-2xl border border-slate-200 bg-slate-950 p-2 shadow-lg">
+            <div className='aspect-video overflow-hidden rounded-xl border border-slate-700 bg-slate-900'>
+                <div ref={ref} className="h-full w-full"></div>
             </div>
+            <p className='px-2 pt-2 text-xs font-medium text-slate-200'>User ID: {user?.uid}</p>
         </div>
     );
 }

@@ -17,7 +17,6 @@ import {
 const _uid = Math.floor(100000 + Math.random() * 900000);
 const appId = import.meta.env.VITE_APP_ID;
 const channel = import.meta.env.VITE_CHANNEL_NAME;
-let _token: string | undefined;
 
 const client = AgoraRTC.createClient({
   mode: "rtc",
@@ -41,7 +40,6 @@ export default function VideoRoom({ socket }: { socket: WebSocket }) {
           _uid,
         });
         dispatch(setToken(res.data.data.token));
-        _token = res.data.data.token;
       } catch (error) {
         console.error("Error fetching token:", error);
       }
@@ -249,18 +247,20 @@ export default function VideoRoom({ socket }: { socket: WebSocket }) {
 
   if (!token) {
     return (
-      <div className="flex justify-center items-center h-screen">Loading...</div>
+      <div className="mt-8 rounded-2xl border border-slate-200 bg-white/80 px-5 py-4 text-sm font-medium text-slate-600 shadow-sm">
+        Preparing room...
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center mt-5 h-screen">
-      <div className="flex flex-wrap justify-center gap-4">
+    <div className="mt-8 flex flex-col items-center">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {users.map((user) => (
           <div key={user.uid} className="relative">
-            <VideoPlayer token={_token!} user={user} />
+            <VideoPlayer user={user} />
             {user.isLocal && (
-              <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+              <div className="absolute left-4 top-4 rounded-lg bg-sky-600 px-2 py-1 text-xs font-semibold text-white shadow-sm">
                 You
               </div>
             )}
@@ -268,39 +268,33 @@ export default function VideoRoom({ socket }: { socket: WebSocket }) {
         ))}
       </div>
 
-      <div className="flex gap-3 mt-16">
+      <div className="mt-8 flex w-full flex-wrap justify-center gap-3 rounded-2xl border border-slate-200 bg-white/85 p-3 shadow-sm">
         <button
           className={`${
-            isMuted
-              ? "bg-gray-500 hover:bg-gray-600"
-              : "bg-green-500 hover:bg-green-600"
-          } text-white px-4 py-2 rounded-md transition-colors`}
+            isMuted ? "bg-slate-500 hover:bg-slate-600" : "bg-emerald-600 hover:bg-emerald-700"
+          } rounded-xl px-4 py-2 text-sm font-semibold text-white transition`}
           onClick={handleMuteToggle}
         >
           {isMuted ? "Unmute" : "Mute"}
         </button>
         <button
           className={`${
-            isCameraOff
-              ? "bg-gray-500 hover:bg-gray-600"
-              : "bg-green-500 hover:bg-green-600"
-          } text-white px-4 py-2 rounded-md transition-colors`}
+            isCameraOff ? "bg-slate-500 hover:bg-slate-600" : "bg-emerald-600 hover:bg-emerald-700"
+          } rounded-xl px-4 py-2 text-sm font-semibold text-white transition`}
           onClick={handleCameraToggle}
         >
           {isCameraOff ? "Turn On Camera" : "Turn Off Camera"}
         </button>
         <button
           className={`${
-            isScreenSharing
-              ? "bg-blue-500 hover:bg-blue-600"
-              : "bg-gray-500 hover:bg-gray-600"
-          } text-white px-4 py-2 rounded-md transition-colors`}
+            isScreenSharing ? "bg-sky-600 hover:bg-sky-700" : "bg-slate-500 hover:bg-slate-600"
+          } rounded-xl px-4 py-2 text-sm font-semibold text-white transition`}
           onClick={handleScreenShareToggle}
         >
           {isScreenSharing ? "Stop Sharing" : "Share Screen"}
         </button>
         <button
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors"
+          className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700"
           onClick={handleLeaveClick}
         >
           End Call
@@ -308,9 +302,9 @@ export default function VideoRoom({ socket }: { socket: WebSocket }) {
       </div>
 
       {currentUser && (
-        <div className="mt-4 text-center">
-          <p className="text-gray-600">User ID: {currentUser.userId}</p>
-          <p className="text-gray-600">Meeting ID: {currentUser.meetId}</p>
+        <div className="mt-4 rounded-xl border border-slate-200 bg-white/85 px-4 py-3 text-center shadow-sm">
+          <p className="text-sm text-slate-600">User ID: {currentUser.userId}</p>
+          <p className="text-sm text-slate-600">Meeting ID: {currentUser.meetId}</p>
         </div>
       )}
     </div>
